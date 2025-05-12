@@ -1,4 +1,4 @@
-import { v4 as uuid4 } from "uuid4";
+import { v4 as uuid4 } from "uuid";
 import { fileURLToPath } from "url";
 import { format } from "date-fns";
 import path from "path";

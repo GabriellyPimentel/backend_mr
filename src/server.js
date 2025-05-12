@@ -1,4 +1,4 @@
-import express from express;
+import express from "express";
 import { logEvents, logger } from "./middlewares/logger.midleware.js"
 import dotenv from "dotenv"
 import maeSolo from "./routes/api.routes.js";
