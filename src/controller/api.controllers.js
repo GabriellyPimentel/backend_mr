@@ -2,11 +2,12 @@ import { logEvents } from "../middlewares/logger.midleware.js";
 import serviceMae from "../services/maesolo.service.js";
 
 import { criarUsuario } from "./../services/criar.service.js";
+import serviceProfissionalApoio from "../services/profissionalapoio.service.js";
 
 
 class MaeSoloController {
     async criarMaeSolo (req, res) {
-        try {
+        try { 
             const {
                     nome,
                     documentoIdentificacao,
@@ -103,6 +104,55 @@ class MaeSoloController {
     }
 
 
+}
+
+    class ProfissionalApoioController {
+        async criarProfissionalApoio(req, res) {
+            try {
+                const {
+                    nome,
+                    documentoIdentificacao,
+                    telefone,
+                    email,
+                    areaAtuacao
+                        } = req.body;
+
+            if (
+                !nome ||
+                !documentoIdentificacao ||
+                !telefone ||
+                !email ||
+                !areaAtuacao
+            ) {
+                return res.status(400).json({
+                    mensagem: "Informe todos os dados obrigatórios."
+                });
+            }
+
+            const novoUsuario = await criarUsuario({
+                nome,
+                documentoIdentificacao,
+                telefone,
+                email
+            });
+
+            const id = novoUsuario.id;
+
+            const novoProfissional = await serviceProfissionalApoio.criarProfissionalApoio({
+                id,
+                areaAtuacao
+            });
+
+            return res.status(201).json({
+                mensagem: "Profissional de apoio cadastrado com sucesso.",
+                profissional: novoProfissional
+            });
+        } catch (err) {
+            return res.status(500).json({
+                erro: err.message
+            });
+        }
+    }
 }
 
 export default new MaeSoloController();
