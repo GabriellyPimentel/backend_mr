@@ -1,33 +1,34 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = PrismaClient;
-import { v4 as uuid4 } from "uuid"
-    export const criar = async (nome, documentoIdentificacao,telefone,email) => { 
-        await prisma.user.create({
-        data: {
-            id: uuid4(),
-            nome,
-            documento_identificacao: documentoIdentificacao,
-            telefone,
-            email 
-        }
-    });
-}
+import { v4 as uuid4 } from "uuid";
+const prisma = new PrismaClient();
+ 
+class serviceMae {
+    async criarMae(data) {
+        const  novaMae = await prisma.maeSolo.create({
+            data: {
+                id: data.id,
+                data_nascimento: data.dataNascimento,
+                escolaridade: data.escolaridade,
+                endereco: data.endereco,
+                rendaMensal: data.rendaMensal,
+                situacaoTrabalho: data.situacaoTrabalho
+            },
+            include: {
+                usuario: true
+            }
+        });
+    return novaMae
+    } 
 
-export const criarMae = async (id, 
-            dataNascimento,
-            escolaridade,
-            endereco,
-            rendaMensal,
-            situacaoTrabalho) => {
-    await prisma.user.create({
-    data: {
-        id,
-        data_nascimento: data_nascimento,
-        escolaridade,
-        endereco,
-        renda_mensal,
-        situacao_trabalho
+   async getAllMaes() {
+        const rows = await prisma.maeSolo.findMany();
+        return rows;
     }
-})
+    
+    async atualizarMae() {
+
+    }
 }
 
+
+export default new serviceMae();

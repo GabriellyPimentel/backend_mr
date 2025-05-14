@@ -1,9 +1,11 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -20,9 +22,9 @@ model Usuario {
 
   // renomeia a tabela Usuario para usuario
   @@map("usuario")
-  MaeSolo MaeSolo[]
-  Doador Doador[]
-  ProfissionalApoio ProfissionalApoio[]
+  MaeSolo MaeSolo?
+  Doador Doador?
+  ProfissionalApoio ProfissionalApoio?
 }
 
 // enum com grau de escolaridade 
@@ -39,7 +41,7 @@ model MaeSolo {
   escolaridade             Escolaridade
   endereco                 String       
   rendaMensal              Int           @map("renda_mensal")    // renomeia redalMensal para renda_mensal
-  situacaoTrabalho         Boolean      @map("situacao_trabalho")   //coloquei situacao_trabalho como boolean, trabalhando como true e não trabalhando para false
+  situacaoTrabalho         Boolean       @map("situacao_trabalho")   //coloquei situacao_trabalho como boolean, trabalhando como true e não trabalhando para false
   usuario                  Usuario         @relation(fields: [id], references: [id]) 
   
   // renomeia a tabela MaeSolo para mae_solo
@@ -80,10 +82,10 @@ model ProfissionalApoio {
 
 model Disponibilidade {
   id                       String         @id @default(uuid())
-  id_profissional          String
+  idProfissional           String         @map("id_profissional")
   data                     String
   horario                  String
-  profissional             ProfissionalApoio         @relation(fields: [id_profissional], references: [id])
+  profissional             ProfissionalApoio         @relation(fields: [idProfissional], references: [id])
   @@map("disponibilidade")  // renomeia a tabela Diponibilidade para disponibilidade
 }
 
@@ -96,22 +98,22 @@ enum StatusEncaminhamento {
 
 model   Encaminhamento {
   id                       String               @id @default(uuid())
-  id_mae                   String 
-  id_profissional          String
+  idMae                    String               @map("id_mae")
+  idProfissional           String               @map("id_profissional")
   data                     DateTime
   status                   StatusEncaminhamento
   tipo_servico             String     // pode ser um enum onde tem os tipos de servicos permitidos
-  maeSolo                  MaeSolo              @relation(fields: [id_mae], references: [id])
-  profissional             ProfissionalApoio    @relation(fields: [id_profissional], references: [id])
+  maeSolo                  MaeSolo              @relation(fields: [idMae], references: [id])
+  profissional             ProfissionalApoio    @relation(fields: [idProfissional], references: [id])
   @@map("encaminhamento")
   Atendimento Atendimento[]
 }
 
 model Atendimento {
   id                      String            @id @default(uuid())
-  id_encaminhamento       String
+  idEncaminhamento        String            @map("id_encaminhamento")
   observacoes             String
   data                    DateTime
-  encaminhamento          Encaminhamento    @relation(fields: [id_encaminhamento], references: [id])
+  encaminhamento          Encaminhamento    @relation(fields: [idEncaminhamento], references: [id])
   @@map("atendimento")
 }
