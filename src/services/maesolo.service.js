@@ -1,33 +1,64 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = PrismaClient;
-import { v4 as uuid4 } from "uuid"
-    export const criar = async (nome, documentoIdentificacao,telefone,email) => { 
-        await prisma.user.create({
-        data: {
-            id: uuid4(),
-            nome,
-            documento_identificacao: documentoIdentificacao,
-            telefone,
-            email 
-        }
-    });
-}
+import { v4 as uuid4 } from "uuid";
+const prisma = new PrismaClient();
+ 
+class serviceMae {
+    async criarMae(data) {
+        const  novaMae = await prisma.maeSolo.create({
+            data: {
+                id: data.id,
+                data_nascimento: data.dataNascimento,
+                escolaridade: data.escolaridade,
+                endereco: data.endereco,
+                rendaMensal: data.rendaMensal,
+                situacaoTrabalho: data.situacaoTrabalho
+            },
+            include: {
+                usuario: true
+            }
+        });
+    return novaMae
+    } 
 
-export const criarMae = async (id, 
-            dataNascimento,
-            escolaridade,
-            endereco,
-            rendaMensal,
-            situacaoTrabalho) => {
-    await prisma.user.create({
-    data: {
-        id,
-        data_nascimento: data_nascimento,
-        escolaridade,
-        endereco,
-        renda_mensal,
-        situacao_trabalho
+    async getAllMaes() {
+        const rows = await prisma.maeSolo.findMany();
+        return rows;
     }
-})
+    
+    async atualizarMae(id, data) {
+        const maeAtualizada = await prisma.maeSolo.update({
+            where: {
+                id
+            },
+            data: {
+                nome: data.nome,
+                telefone: data.telefone,
+                email: data.email,
+                escolaridade: data.escolaridade,
+                endereco: data.endereco,
+                rendaMensal: data.rendaMensal,
+                situacaoTrabalho: data.situacaoTrabalho
+            }
+        });
+        return maeAtualizada;
+    };
+
+    async deletarMae(id) {
+        const maeDeletada = await prisma.maeSolo.delete({
+            where: {
+                id
+            }
+        })
+    };
+
+    async encontrarMaeCpf(identificacao) {
+        const mae = await prisma.maeSolo.findUnique({
+            where: {
+                documentoIdentificacao: identificacao
+            }
+        })
+    }
 }
 
+
+export default new serviceMae();
