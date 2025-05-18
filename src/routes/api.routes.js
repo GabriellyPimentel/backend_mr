@@ -8,7 +8,11 @@ const profissionalApoio = Router();
 
 
 // Colocar as rotas aqui
-maeSolo.post("/cadastrarMae", MaeSoloController.criarMaeSolo);
+//rotas da mae
+maeSolo.get("/mae", MaeSoloController.getAllMaes);
+maeSolo.post("/mae/cadastrar", MaeSoloController.criarMaeSolo);
+maeSolo.put("/mae/atualizar/:cpf", MaeSoloController.atualizarMae);
+maeSolo.delete("/mae/deletar/:cpf", MaeSoloController.deletarMae);
 
 profissionalApoio.post("/cadastrarProfissional", ProfissionalApoioController.criarProfissionalApoio);
 
