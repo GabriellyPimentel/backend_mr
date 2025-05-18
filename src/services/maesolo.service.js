@@ -31,9 +31,6 @@ class serviceMae {
                 id
             },
             data: {
-                nome: data.nome,
-                telefone: data.telefone,
-                email: data.email,
                 escolaridade: data.escolaridade,
                 endereco: data.endereco,
                 rendaMensal: data.rendaMensal,
@@ -49,6 +46,7 @@ class serviceMae {
                 id
             }
         })
+        return maeDeletada;
     };
 
     async encontrarMaeCpf(identificacao) {

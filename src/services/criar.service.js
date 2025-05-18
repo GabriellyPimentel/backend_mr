@@ -17,14 +17,15 @@ export async function criarUsuario(data) {
 }
 
 export async function encontrarUsuario(identificacao) {
-    const usuario = await prisma.usuario.findUnique({
-        where: {
-                documentoIdentificacao: identificacao
+    const usuario = await prisma.usuario.findFirst({
+        where:{
+            documentoIdentificacao: identificacao
         }
     });
+    return usuario;
 };
 
-export async function atualizarUsuario(data) {
+export async function atualizarUsuario(id,data) {
     const usuarioAtualizado = await prisma.usuario.update({
         where: {
             id
@@ -35,5 +36,6 @@ export async function atualizarUsuario(data) {
             telefone: data.telefone,
             email: data.email
         }
-    })
+    });
+    return usuarioAtualizado
 }
