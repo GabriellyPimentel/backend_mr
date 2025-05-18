@@ -1,7 +1,6 @@
 import { logEvents } from "../middlewares/logger.midleware.js";
 import maesoloService from "../services/maesolo.service.js";
 import serviceMae from "../services/maesolo.service.js";
-
 import { 
     criarUsuario,
     encontrarUsuario,
@@ -9,9 +8,10 @@ import {
 } from "./../services/criar.service.js";
 
 
+
 class MaeSoloController {
     async criarMaeSolo (req, res) {
-        try {
+        try { 
             const {
                 nome,
                 documentoIdentificacao,
@@ -187,5 +187,7 @@ class MaeSoloController {
         });
     }
 }
+
+
 
 export default new MaeSoloController();
