@@ -1,66 +1,68 @@
 import { logEvents } from "../middlewares/logger.midleware.js";
 import maesoloService from "../services/maesolo.service.js";
 import serviceMae from "../services/maesolo.service.js";
-
 import { 
     criarUsuario,
-    encontrarUsuario
+    encontrarUsuario,
+    atualizarUsuario
 } from "./../services/criar.service.js";
+
 
 
 class MaeSoloController {
     async criarMaeSolo (req, res) {
-        try {
+        try { 
             const {
-            nome,
-            documentoIdentificacao,
-            telefone,
-            email,
-            ano,
-            mes,
-            dia,
-            escolaridade,
-            endereco,
-            rendaMensal,
-            situacaoTrabalho
-        } = req.body;
+                nome,
+                documentoIdentificacao,
+                telefone,
+                email,
+                ano,
+                mes,
+                dia,
+                escolaridade,
+                endereco,
+                rendaMensal,
+                situacaoTrabalho
+            } = req.body;
 
-        if( !nome ||
-            !documentoIdentificacao ||
-            !ano ||
-            !mes ||
-            !dia ||
-            !escolaridade ||
-            !endereco ||
-            !rendaMensal ||
-            !situacaoTrabalho) {
+            if( !nome ||
+                !documentoIdentificacao ||
+                !ano ||
+                !mes ||
+                !dia ||
+                !escolaridade ||
+                !endereco ||
+                !rendaMensal ||
+                !situacaoTrabalho) 
+            {
                 return res.status(400).json({
                     mensagem: "Informe todos os dados"
                 })
-        }
+            }
+            const existeMae = await encontrarUsuario(documentoIdentificacao);
 
-        const existeMae = await encontrarUsuario(documentoIdentificacao);
+            if(existeMae) {
+                return res.status(404).json({message: "Insira dados validos"});
+            }
+            console.log(existeMae);
 
-        if(existeMae) {
-            return res.status(404).json({message: "Insira dados validos"});
-        }
+            const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
+            const novoUsuario = await criarUsuario({nome, documentoIdentificacao, telefone, email});
+            const id = novoUsuario.id;
+            
+            const novaMae = await serviceMae.criarMae({
+                id,  
+                dataNascimento,
+                escolaridade,
+                endereco,
+                rendaMensal,
+                situacaoTrabalho
+            });
 
-        const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
-        const novoUsuario = await criarUsuario({nome, documentoIdentificacao, telefone, email});
-        const id = novoUsuario.id;
-        
-        const novaMae = await serviceMae.criarMae({
-            id,  
-            dataNascimento,
-            escolaridade,
-            endereco,
-            rendaMensal,
-            situacaoTrabalho
-        });
-
-        return res.json ({
-            mensagem: "Mãe cadastrada"
-        })
+            return res.json ({
+                mensagem: "Mãe cadastrada"
+            })
         } catch(err) {
             console.log(err.message)
         }
@@ -74,18 +76,23 @@ class MaeSoloController {
     }
 
     async atualizarMae(req,res) {
-        const { documentoIdentificacao } = req.params;
+        const { cpf } = req.params;
+
         const {
-            nome,
-            telefone,
-            email,
-            escolaridade,
-            endereco,
-            rendaMensal,
-            situacaoTrabalho
+                nome,
+                documentoIdentificacao,
+                telefone,
+                email,
+                ano,
+                mes,
+                dia,
+                escolaridade,
+                endereco,
+                rendaMensal,
+                situacaoTrabalho
         } = req.body;
 
-        if(!identificacao) {
+        if(!cpf) {
             return res.status(404).json({message: "Informe o documento de identificacao."});
         }
 
@@ -101,17 +108,21 @@ class MaeSoloController {
             });
         }
 
-        const mae = await encontrarUsuario(documentoIdentificacao);
+        const mae = await encontrarUsuario(cpf);
         
          if(!mae) {
             return res.status(404).json({ message: "Mae não encontrada."});
         }
-
-        const atualizado = await atualizarMae(
+        console.log(mae.id);
+        const usuarioAtualizaddo = await atualizarUsuario(
             mae.id, {
                 nome,
-                telefone,
-                email,
+                telefone
+            }
+        )
+        
+        const maeAtualizada = await serviceMae.atualizarMae(
+            mae.id, {
                 escolaridade,
                 endereco,
                 rendaMensal,
@@ -120,24 +131,41 @@ class MaeSoloController {
 
         res.status(200).json({
             message: "Mãe atualizada!",
-            atualizado
+            maeAtualizada: {
+                "nome": usuarioAtualizaddo.nome,
+                "telefone": usuarioAtualizaddo.telefone,
+                "documentoIdentificacao": usuarioAtualizaddo.documentoIdentificacao,
+                "telefone": usuarioAtualizaddo.telefone,
+                "email": usuarioAtualizaddo.email,
+                "dataNascimento": maeAtualizada.data_nascimento,
+                "escolaridade": maeAtualizada.escolaridade,
+                "endereco": maeAtualizada.endereco,
+                "rendaMensal": maeAtualizada.rendaMensal,
+                "situacaoTrabalho": maeAtualizada.situacaoTrabalho
+            }
         });
     }
 
     async deletarMae(req, res) {
-        const { documentoIdentificacao } = req.params;
-        if(!documentoIdentificacao) {
+        const { cpf } = req.params;
+        if(!cpf) {
             return res.status(400).json({message: "Informe o documento de identificação da mãe a ser deletada!"});
         }
-
-        const maeDeletar = encontrarUsuario(documentoIdentificacao);
+        
+        const maeDeletar = await encontrarUsuario(cpf);
+        console.log(maeDeletar)
 
         if(!maeDeletar) {
-            return res.status(400).json({message: "Informações inválidas"})
+            return res.status(400).json({message: "Informações inválidas!!!"})
         }
 
-        serviceMae.deletarMae(maeDeletar.id);
-        return res.status(200).json({message: "Mãe excluida!"})
+        console.log(maeDeletar.id)
+
+        const maeDeletada = serviceMae.deletarMae(maeDeletar.id);
+        return res.status(200).json({
+            message: "Mãe excluida!",
+            maeDeletada
+        })
     }
 
     async encontrarMaeCpf(req, res) {
@@ -159,5 +187,7 @@ class MaeSoloController {
         });
     }
 }
+
+
 
 export default new MaeSoloController();

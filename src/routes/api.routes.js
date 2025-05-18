@@ -1,12 +1,23 @@
 import { Router } from "express";
 import MaeSoloController from "./../controller/api.controllers.js"
+import ProfissionalApoioController from "../controllers/ProfissionalApoioController.js";
+
 
 const maeSolo = Router();
+const profissionalApoio = Router();
+
 
 // Colocar as rotas aqui
-maeSolo.post("/cadastrar-mae", MaeSoloController.criarMaeSolo);
-maeSolo.get("/", MaeSoloController.getAllMaes);
-maeSolo.put("/atualizar-mae:cpf", MaeSoloController.atualizarMae);
-maeSolo.delete("/deletar-mae:cpf", MaeSoloController.deletarMae);
+//rotas da mae
+maeSolo.get("/mae", MaeSoloController.getAllMaes);
+maeSolo.post("/mae/cadastrar", MaeSoloController.criarMaeSolo);
+maeSolo.put("/mae/atualizar/:cpf", MaeSoloController.atualizarMae);
+maeSolo.delete("/mae/deletar/:cpf", MaeSoloController.deletarMae);
+
+profissionalApoio.post("/cadastrarProfissional", ProfissionalApoioController.criarProfissionalApoio);
+
+
 
 export default maeSolo;
+
+
