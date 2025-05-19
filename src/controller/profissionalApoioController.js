@@ -1,5 +1,12 @@
 import { logEvents } from "../middlewares/logger.midleware.js";
 import serviceProfissionalApoio from "../services/profissionalapoio.service.js";
+import { 
+    criarUsuario,
+    encontrarUsuario,
+    atualizarUsuario,
+    deletarUsuario
+ } from "../services/criar.service.js";
+
 
 class ProfissionalApoioController {
         async criarProfissionalApoio(req, res) {
@@ -49,61 +56,69 @@ class ProfissionalApoioController {
         }
     }
 
-      async getAllProfissionais() {
-        const profissionais = await prisma.profissionalApoio.findMany({
-            include: {
-                usuario: true
-            }
+    async getAllProfissionais() {
+        const profissionais = await serviceProfissionalApoio.getAllProfissionais();
+        return res.status(200).json({
+            profissionais
         });
-        return profissionais;
     }
 
-    async atualizarProfissional(id, data) {
-        const profissionalExistente = await prisma.profissionalApoio.findUnique({
-            where: { id }
+    async atualizarProfissional(req, res) {
+        const { cpf } = req.params;
+        const {
+            nome,
+            documentoIdentificacao,
+            telefone,
+            email,
+            areaAtuacao
+        } = req.body;
+
+        if (!cpf) {
+            return res.status(400).json({
+                message: "Iforme o cpf do profissional."
+            })
+        };
+
+        const usuario = await encontrarUsuario(cpf);
+
+        if(!usuario) {
+            return res.status(400).json({
+                message: "Informações inválidas!"
+            });
+        }
+
+        const usuarioAtualizado = await atualizarUsuario(usuario.id, {
+            nome,
+            documentoIdentificacao,
+            telefone,
+            email
         });
 
-        if (!profissionalExistente) return null;
-
-        await prisma.usuario.update({
-            where: { id },
-            data: {
-                nome: data.nome,
-                telefone: data.telefone,
-                email: data.email,
-                documentoIdentificacao: data.documentoIdentificacao
-            }
+        const profissionalAtualizado = await serviceProfissionalApoio(usuario.id, {
+            areaAtuacao
         });
-
-        const profissionalAtualizado = await prisma.profissionalApoio.update({
-            where: { id },
-            data: {
-                areaAtuacao: data.areaAtuacao
-            },
-            include: {
-                usuario: true
-            }
-        });
-
-        return profissionalAtualizado;
+        return res.status(200).json({
+            message: "Profissional atualizado",
+            profissionalAtualizado
+        }); 
     }
 
-    async deletarProfissional(id) {
-        const profissionalExistente = await prisma.profissionalApoio.findUnique({
-            where: { id }
+    async deletarProfissional(req, res) {
+        const { cpf } = req.params;
+
+        if(!id) {
+            return res.status(400).json( { erro: "Id não informado"});
+        }
+        const usuarioExiste = await encontrarUsuario(id);
+        
+        if(!usuarioExiste) {
+            return res.status(400).json({ message: "infome um usuário válido!"});
+        }
+        const usuarioDeletado = await deletarUsuario(usuarioExiste.id);
+        const profissionalDeletado = await serviceProfissionalApoio.deletarProfissional(usuarioExiste.id);
+        return res.status(200).json({
+            message: "Profissional deletado!"
         });
-
-        if (!profissionalExistente) return null;
-
-        await prisma.profissionalApoio.delete({
-            where: { id }
-        });
-
-        await prisma.usuario.delete({
-            where: { id }
-        });
-
-        return true;
     }
 }
 
