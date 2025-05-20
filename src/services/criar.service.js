@@ -41,6 +41,7 @@ export async function atualizarUsuario(id,data) {
 }
 
 export async function deletarUsuario(id) {
+    console.log(id);
     const usuarioDeletado = await prisma.usuario.delete({
         where: { id }
     })

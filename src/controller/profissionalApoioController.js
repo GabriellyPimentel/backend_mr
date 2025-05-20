@@ -31,6 +31,12 @@ class ProfissionalApoioController {
                 });
             }
 
+            const existeUsuario = await encontrarUsuario(documentoIdentificacao);
+
+            if(existeUsuario) {
+                return res.status(404).json({message: "Insira dados validos"});
+            }
+
             const novoUsuario = await criarUsuario({
                 nome,
                 documentoIdentificacao,
@@ -56,7 +62,7 @@ class ProfissionalApoioController {
         }
     }
 
-    async getAllProfissionais() {
+    async getAllProfissionais(req, res) {
         const profissionais = await serviceProfissionalApoio.getAllProfissionais();
         return res.status(200).json({
             profissionais
@@ -67,7 +73,6 @@ class ProfissionalApoioController {
         const { cpf } = req.params;
         const {
             nome,
-            documentoIdentificacao,
             telefone,
             email,
             areaAtuacao
@@ -89,12 +94,12 @@ class ProfissionalApoioController {
 
         const usuarioAtualizado = await atualizarUsuario(usuario.id, {
             nome,
-            documentoIdentificacao,
+            documentoIdentificacao: usuario.documentoIdentificacao,
             telefone,
-            email
+            email: usuario.email
         });
 
-        const profissionalAtualizado = await serviceProfissionalApoio(usuario.id, {
+        const profissionalAtualizado = await serviceProfissionalApoio.atualizarProfissional(usuario.id, {
             areaAtuacao
         });
         return res.status(200).json({
@@ -106,16 +111,18 @@ class ProfissionalApoioController {
     async deletarProfissional(req, res) {
         const { cpf } = req.params;
 
-        if(!id) {
-            return res.status(400).json( { erro: "Id não informado"});
+        if(!cpf) {
+            return res.status(400).json( { erro: "Cpf não informado"});
         }
-        const usuarioExiste = await encontrarUsuario(id);
+        const usuarioExiste = await encontrarUsuario(cpf);
         
         if(!usuarioExiste) {
             return res.status(400).json({ message: "infome um usuário válido!"});
         }
-        const usuarioDeletado = await deletarUsuario(usuarioExiste.id);
+
         const profissionalDeletado = await serviceProfissionalApoio.deletarProfissional(usuarioExiste.id);
+        const usuarioDeletado = await deletarUsuario(usuarioExiste.id);
+        
         return res.status(200).json({
             message: "Profissional deletado!"
         });
