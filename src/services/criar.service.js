@@ -39,3 +39,12 @@ export async function atualizarUsuario(id,data) {
     });
     return usuarioAtualizado
 }
+
+export async function deletarUsuario(id) {
+    console.log(id);
+    const usuarioDeletado = await prisma.usuario.delete({
+        where: { id }
+    })
+    
+    return usuarioDeletado;
+}

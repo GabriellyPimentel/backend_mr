@@ -1,5 +1,12 @@
 import { logEvents } from "../middlewares/logger.midleware.js";
-import serviceProfissionalApoio from "../services/profissionalapoio.service.js";
+import serviceProfissionalApoio from "../services/profissionalApoio.service.js";
+import { 
+    criarUsuario,
+    encontrarUsuario,
+    atualizarUsuario,
+    deletarUsuario
+ } from "../services/criar.service.js";
+
 
 class ProfissionalApoioController {
         async criarProfissionalApoio(req, res) {
@@ -63,16 +70,25 @@ class ProfissionalApoioController {
             where: { id }
         });
 
-        if (!profissionalExistente) return null;
+        if (!cpf) {
+            return res.status(400).json({
+                message: "Iforme o cpf do profissional."
+            })
+        };
 
-        await prisma.usuario.update({
-            where: { id },
-            data: {
-                nome: data.nome,
-                telefone: data.telefone,
-                email: data.email,
-                documentoIdentificacao: data.documentoIdentificacao
-            }
+        const usuario = await encontrarUsuario(cpf);
+
+        if(!usuario) {
+            return res.status(400).json({
+                message: "Informações inválidas!"
+            });
+        }
+
+        const usuarioAtualizado = await atualizarUsuario(usuario.id, {
+            nome,
+            documentoIdentificacao: usuario.documentoIdentificacao,
+            telefone,
+            email: usuario.email
         });
 
         const profissionalAtualizado = await prisma.profissionalApoio.update({
