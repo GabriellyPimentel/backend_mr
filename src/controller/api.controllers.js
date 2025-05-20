@@ -4,7 +4,8 @@ import serviceMae from "../services/maesolo.service.js";
 import { 
     criarUsuario,
     encontrarUsuario,
-    atualizarUsuario
+    atualizarUsuario,
+    deletarUsuario
 } from "./../services/criar.service.js";
 
 
@@ -45,7 +46,6 @@ class MaeSoloController {
             if(existeMae) {
                 return res.status(404).json({message: "Insira dados validos"});
             }
-            console.log(existeMae);
 
             const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
             const novoUsuario = await criarUsuario({nome, documentoIdentificacao, telefone, email});
@@ -80,7 +80,6 @@ class MaeSoloController {
 
         const {
                 nome,
-                documentoIdentificacao,
                 telefone,
                 email,
                 ano,
@@ -113,11 +112,12 @@ class MaeSoloController {
          if(!mae) {
             return res.status(404).json({ message: "Mae não encontrada."});
         }
-        console.log(mae.id);
         const usuarioAtualizaddo = await atualizarUsuario(
             mae.id, {
                 nome,
-                telefone
+                documentoIdentificacao: mae.documentoIdentificacao,
+                telefone,
+                email: mae.email
             }
         )
         
@@ -153,18 +153,15 @@ class MaeSoloController {
         }
         
         const maeDeletar = await encontrarUsuario(cpf);
-        console.log(maeDeletar)
 
         if(!maeDeletar) {
             return res.status(400).json({message: "Informações inválidas!!!"})
         }
 
-        console.log(maeDeletar.id)
-
-        const maeDeletada = serviceMae.deletarMae(maeDeletar.id);
+        const maeDeletada = await serviceMae.deletarMae(maeDeletar.id);
+        const usuarioDeletado = await deletarUsuario(maeDeletar.id);
         return res.status(200).json({
-            message: "Mãe excluida!",
-            maeDeletada
+            message: "Mãe excluida!"
         })
     }
 
