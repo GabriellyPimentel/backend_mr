@@ -5,7 +5,7 @@ import {
     criarUsuario,
     encontrarUsuario,
     atualizarUsuario
-} from "./../services/criar.service.js";
+} from "../services/criar.service.js";
 
 
 
