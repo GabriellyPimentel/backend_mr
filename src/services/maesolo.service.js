@@ -20,13 +20,41 @@ class serviceMae {
     return novaMae
     } 
 
-   async getAllMaes() {
+    async getAllMaes() {
         const rows = await prisma.maeSolo.findMany();
         return rows;
     }
     
-    async atualizarMae() {
+    async atualizarMae(id, data) {
+        const maeAtualizada = await prisma.maeSolo.update({
+            where: {
+                id
+            },
+            data: {
+                escolaridade: data.escolaridade,
+                endereco: data.endereco,
+                rendaMensal: data.rendaMensal,
+                situacaoTrabalho: data.situacaoTrabalho
+            }
+        });
+        return maeAtualizada;
+    };
 
+    async deletarMae(id) {
+        const maeDeletada = await prisma.maeSolo.delete({
+            where: {
+                id
+            }
+        })
+        return maeDeletada;
+    };
+
+    async encontrarMaeCpf(identificacao) {
+        const mae = await prisma.maeSolo.findUnique({
+            where: {
+                documentoIdentificacao: identificacao
+            }
+        })
     }
 }
 
