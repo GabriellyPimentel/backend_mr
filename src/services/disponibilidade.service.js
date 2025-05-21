@@ -1,11 +1,13 @@
 import { PrismaClient } from "@prisma/client";
+import { v4 as uuid4 } from "uuid";
 const prisma = new PrismaClient();
 
-class servicedisponibilidade {
+class serviceDisponibilidade {
     async criardisponibilidade(data) {
         const novadisponibilidade = await prisma.disponibilidade.create({
             data: {
-                idProfissionalApoio: data.idProfissionalApoio,
+                id: uuid4(),
+                idProfissionalApoio: data.idProfissional,
                 horario: data.horario,
                 data: new Date(data.data)
             },
@@ -27,7 +29,7 @@ class servicedisponibilidade {
 
     async buscarPorId(id) {
         return await prisma.disponibilidade.findUnique({
-            where: { id: Number(id) },
+            where: { id },
             include: {
                 profissionalApoio: true
             }
@@ -36,9 +38,8 @@ class servicedisponibilidade {
 
     async atualizardisponibilidade(id, dataAtualizada) {
         return await prisma.disponibilidade.update({
-            where: { id: Number(id) },
+            where: { id },
             data: {
-                idProfissionalApoio: dataAtualizada.idProfissionalApoio,
                 horario: dataAtualizada.horario,
                 data: new Date(dataAtualizada.data)
             }
@@ -47,10 +48,21 @@ class servicedisponibilidade {
 
     async deletardisponibilidade(id) {
         return await prisma.disponibilidade.delete({
-            where: { id: Number(id) }
+            where: { id}
+        });
+    }
+
+    async listarDisponibilidadeProfissional(idProfissional) {
+        return await prisma.disponibilidade.findMany({
+            where: {
+                idProfissional
+            },
+            include: {
+                profissionalApoio: true
+            }
         });
     }
 }
 
-export default new servicedisponibilidade();
+export default new serviceDisponibilidade();
 

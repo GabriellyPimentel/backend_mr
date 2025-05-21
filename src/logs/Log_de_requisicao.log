@@ -133,3 +133,8 @@
 2025-05-20	10:24:47	dead1bf8-d005-489e-a169-189f61b269d0	DELETE	/mae-solo/mae/deletar/7	undefined
 2025-05-20	10:31:36	2078445e-f0bb-444b-b8a7-df8e896a6682	DELETE	/profissional/deletar/10	undefined
 2025-05-20	10:33:16	c456d381-941e-4dee-9afb-2fbc46eeb808	DELETE	/profissional/deletar/10	undefined
+2025-05-20	16:34:10	ca5daa12-8a37-4158-ac31-a3118c6efea6	POST	/mae-solo/mae/cadastrar	undefined
+2025-05-20	16:34:23	0df1dc8f-6393-4ed8-b1d4-911aee31a05d	GET	/mae-solo/mae	undefined
+2025-05-20	16:38:47	bce4b386-d074-42fd-ae82-569e7dbe4cb7	PUT	/mae-solo/mae/atualizar/20	undefined
+2025-05-20	16:43:53	cffad3de-2435-4790-91b9-9efa3c03a593	DELETE	/mae-solo/mae/deletar/	undefined
+2025-05-20	16:44:03	072f99e3-f8a4-4064-ab6a-6735832835a9	DELETE	/mae-solo/mae/deletar/20	undefined
