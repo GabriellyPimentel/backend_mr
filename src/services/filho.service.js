@@ -40,13 +40,11 @@ export async function atualizarFilho(id, dados) {
     where: { id },
     data: {
       nome: dados.nome,
-      dataNascimento: dados.dataNascimento
-        ? new Date(dados.dataNascimento)
-        : undefined
+      data_nascimento: dados.dataNascimento
     },
     include: {
-      maeSolo: {
-        include: { usuario: true }
+      mae: {
+        include: { usuario: true } // Isso só funciona se o modelo MaeSolo tiver `usuario`
       }
     }
   });
