@@ -5,16 +5,19 @@ const prisma = new PrismaClient();
 class disponibilidadeService {
     async criardisponibilidade(data) {
         const novadisponibilidade = await prisma.disponibilidade.create({
-            data: {
-                id: uuid4(),
-                idProfissionalApoio: data.idProfissional,
-                horario: data.horario,
-                data: new Date(data.data)
-            },
-            include: {
-                profissionalApoio: true
-            }
-        });
+    data: {
+        data: data.data,
+        horario:data.horario,
+        profissional: {
+        connect: {
+            id: data.idProfissional  // ou idProfissionalApoio dependendo do nome real
+        }
+        }
+    },
+    include: {
+        profissional: true  // ou profissionalApoio
+    }
+});
 
         return novadisponibilidade;
     }
@@ -27,19 +30,22 @@ class disponibilidadeService {
         return await prisma.disponibilidade.findUnique({
             where: { id },
             include: {
-                profissionalApoio: true
+                profissional: true
             }
         });
     }
 
     async atualizardisponibilidade(id, dataAtualizada) {
         return await prisma.disponibilidade.update({
-            where: { id },
-            data: {
-                horario: dataAtualizada.horario,
-                data: new Date(dataAtualizada.data)
-            }
-        });
+        where: { id },
+        data: {
+            horario: dataAtualizada.horario,
+            data: dataAtualizada.data
+        },
+        include: {
+            profissional: true
+        }
+    });
     }
 
     async deletardisponibilidade(id) {

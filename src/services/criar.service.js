@@ -25,6 +25,15 @@ export async function encontrarUsuario(identificacao) {
     return usuario;
 };
 
+export async function encontrarUsuarioId(id) {
+    const usuario = await prisma.usuario.findFirst({
+        where: {
+            id
+        }
+    })
+    return usuario;
+}
+
 export async function atualizarUsuario(id,data) {
     const usuarioAtualizado = await prisma.usuario.update({
         where: {

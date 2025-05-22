@@ -5,8 +5,8 @@ const disponibilidade = Router();
 
 disponibilidade.get("/", disponibilidadeController.pegarTodasDisponibilidade);
 disponibilidade.get("/:id", disponibilidadeController.pegarDisponibilidade);
-disponibilidade.post("/criar-disponibilidade", disponibilidadeController.criarDisponibilidade);
-disponibilidade.put("/atualizar-disponibilidade/:id", disponibilidadeController.editarDisponibilidade);
+disponibilidade.post("/criar", disponibilidadeController.criarDisponibilidade);
+disponibilidade.put("/atualizar/:id", disponibilidadeController.editarDisponibilidade);
 disponibilidade.delete("/deletar/:id", disponibilidadeController.deletarDisponibilidade);
 disponibilidade.get("/:idProfissional", disponibilidadeController.disponibilidadePofissional);
 

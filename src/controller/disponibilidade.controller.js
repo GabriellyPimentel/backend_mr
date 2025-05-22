@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { 
-    encontrarUsuario
+    encontrarUsuarioId
  } from "../services/criar.service.js";
 import disponibilidadeService from "../services/disponibilidade.service.js";
 
@@ -16,20 +16,18 @@ class DisponibilidadeController {
             return res.status(400).json({message: "Informe todos os dados!"});
         }
 
-        const existeUsuario = await encontrarUsuario(idProfissional);
+        const existeUsuario = await encontrarUsuarioId(idProfissional);
+
 
         if(!existeUsuario) {
             console.log(existeUsuario);
             return res.status(404).json({erro: "Usuário inválido!"});
         }
 
-        const horaFormatada = `${format(new Date(horario), "HH:mm:ss")}`;
-        const dataFormatada = `${format(new Date(data), "yyyy-MM-dd")}`;
-
         const disponibilidade = await disponibilidadeService.criardisponibilidade({
             idProfissional,
-            horario: horaFormatada,
-            data: dataFormatada
+            horario,
+            data
         });
 
         return res.status(201).json({
@@ -81,6 +79,9 @@ class DisponibilidadeController {
         }
 
         const disponibilidade = disponibilidadeService.buscarPorId(id);
+        if(!disponibilidade) {
+            return res.status(404).json({message: "disponibilidade não encontrada!"});
+        }
 
         return res.status(200).json(disponibilidade);
     }
