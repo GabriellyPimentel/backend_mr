@@ -65,6 +65,10 @@ class DisponibilidadeController {
     async pegarTodasDisponibilidade(req, res) {
         const todasDisponibilidade = await disponibilidadeService.listardisponibilidade();
 
+        if(!todasDisponibilidade) {
+            return res.status(400).json({message: "sem disponibilidades no momento!"});
+        }
+
         return res.status(200).json({todasDisponibilidade});
     }
     
