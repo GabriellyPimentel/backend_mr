@@ -1,5 +1,6 @@
 import { logEvents } from "../middlewares/logger.midleware.js";
-import serviceProfissionalApoio from "../services/profissionalapoio.service.js";
+import profissionalApoioService from "../services/profissionalApoio.service.js";
+
 import { 
     criarUsuario,
     encontrarUsuario,
@@ -46,7 +47,7 @@ class ProfissionalApoioController {
 
             const id = novoUsuario.id;
 
-            const novoProfissional = await serviceProfissionalApoio.criarProfissionalApoio({
+            const novoProfissional = await profissionalApoioService.criarProfissionalApoio({
                 id,
                 areaAtuacao
             });
@@ -63,7 +64,7 @@ class ProfissionalApoioController {
     }
 
     async getAllProfissionais(req, res) {
-        const profissionais = await serviceProfissionalApoio.getAllProfissionais();
+        const profissionais = await profissionalApoioService.getAllProfissionais();
         return res.status(200).json({
             data: profissionais
         });
@@ -99,7 +100,7 @@ class ProfissionalApoioController {
             email: usuario.email
         });
 
-        const profissionalAtualizado = await serviceProfissionalApoio.atualizarProfissional(usuario.id, {
+        const profissionalAtualizado = await profissionalApoioService.atualizarProfissional(usuario.id, {
             areaAtuacao
         });
         return res.status(200).json({
@@ -120,7 +121,7 @@ class ProfissionalApoioController {
             return res.status(400).json({ message: "infome um usuário válido!"});
         }
 
-        const profissionalDeletado = await serviceProfissionalApoio.deletarProfissional(usuarioExiste.id);
+        const profissionalDeletado = await profissionalApoioService.deletarProfissional(usuarioExiste.id);
         const usuarioDeletado = await deletarUsuario(usuarioExiste.id);
         
         return res.status(200).json({
