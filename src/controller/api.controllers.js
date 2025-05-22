@@ -41,11 +41,8 @@ class MaeSoloController {
                     mensagem: "Informe todos os dados"
                 })
             }
-            const existeMae = await encontrarUsuario(documentoIdentificacao);
-
-            if(existeMae) {
-                return res.status(404).json({message: "Insira dados validos"});
-            }
+            
+            
 
             const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
             const novoUsuario = await criarUsuario({nome, documentoIdentificacao, telefone, email});

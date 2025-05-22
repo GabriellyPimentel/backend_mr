@@ -26,6 +26,7 @@ model Usuario {
   // renomeia a tabela Usuario para usuario
   @@map("usuario")
   MaeSolo MaeSolo?
+  Doador Doador?
   ProfissionalApoio ProfissionalApoio?
 }
 
@@ -59,6 +60,15 @@ model Filho {
   idMae     String          @map("id_mae")
   mae       MaeSolo         @relation(fields: [idMae], references: [id]) 
   @@map("filho")
+}
+
+
+model Doador {
+  id                       String          @id
+  tipo_doador              String
+  usuario                  Usuario         @relation(fields: [id], references: [id])
+  // 
+  @@map("doador")
 }
 
 model ProfissionalApoio {

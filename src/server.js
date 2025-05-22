@@ -20,5 +20,6 @@ app.use("/disponibilidade", disponibilidade);
 const PORT = process.env.PORT || 8800;
 
 app.listen(PORT, async () => {
-    logEvents(`Servidor rodando na porta ${PORT}`, "listen.log");
+    //logEvents(`Servidor rodando na porta ${PORT}`, "listen.log");
+    console.log(`Servidor rodando na porta ${PORT}`)
 });
