@@ -65,7 +65,7 @@ class ProfissionalApoioController {
     async getAllProfissionais(req, res) {
         const profissionais = await serviceProfissionalApoio.getAllProfissionais();
         return res.status(200).json({
-            profissionais
+            data: profissionais
         });
     }
 
