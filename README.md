@@ -9,12 +9,24 @@ A **MãeRaiz** nasceu para apoiar mães solo que enfrentam desafios. Inspirada n
 
 - ⚙️ **JavaScript / Node.js**  
 - 🚏 **Express**  
-- 🗂️ **Sequelize**  
+- 🗂️ **PostgreSQL** 
 - 🌿 **Prisma**  
 - 🔁 **Nodemon**  
 
 ---
-
+## 📁 Estrutura do Projeto  
+- `src/`  
+  - `controllers/`  
+  - `models/`  
+  - `routes/`  
+  - `middlewares/`  
+  - `services/`  
+  - `config/`  
+- `prisma/`  
+- `.env.example`  
+- `package.json`  
+- `README.md`  
+---
 ## ⚠️ Observações  
 Esta API está em desenvolvimento. As funcionalidades, rotas e respostas estão sendo construídas e serão documentadas em breve.
 
