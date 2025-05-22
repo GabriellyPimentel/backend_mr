@@ -18,11 +18,7 @@ class serviceProfissionalApoio {
     }
     
     async getAllProfissionais() {
-        const profissionais = await prisma.profissionalApoio.findMany({
-            include: {
-                usuario: true
-            }
-        });
+        const profissionais = await prisma.profissionalApoio.findMany();
         return profissionais;
     }
 
