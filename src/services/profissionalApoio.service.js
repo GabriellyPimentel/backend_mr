@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 
-class serviceProfissionalApoio {
+class profissionalApoioService {
     async criarProfissionalApoio(data) {
         const novoProfissional = await prisma.profissionalApoio.create({
             data: {
@@ -18,11 +18,7 @@ class serviceProfissionalApoio {
     }
     
     async getAllProfissionais() {
-        const profissionais = await prisma.profissionalApoio.findMany({
-            include: {
-                usuario: true
-            }
-        });
+        const profissionais = await prisma.profissionalApoio.findMany();
         return profissionais;
     }
 
@@ -49,4 +45,4 @@ class serviceProfissionalApoio {
     }
 }
 
-export default new serviceProfissionalApoio();
+export default new profissionalApoioService();

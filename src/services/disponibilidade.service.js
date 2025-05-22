@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { v4 as uuid4 } from "uuid";
 const prisma = new PrismaClient();
 
-class serviceDisponibilidade {
+class disponibilidadeService {
     async criardisponibilidade(data) {
         const novadisponibilidade = await prisma.disponibilidade.create({
             data: {
@@ -20,11 +20,7 @@ class serviceDisponibilidade {
     }
 
     async listardisponibilidade() {
-        return await prisma.disponibilidade.findMany({
-            include: {
-                profissionalApoio: true
-            }
-        });
+        return await prisma.disponibilidade.findMany();
     }
 
     async buscarPorId(id) {
@@ -64,5 +60,5 @@ class serviceDisponibilidade {
     }
 }
 
-export default new serviceDisponibilidade();
+export default new disponibilidadeService();
 

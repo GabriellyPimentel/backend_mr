@@ -70,7 +70,7 @@ class DisponibilidadeController {
             return res.status(400).json({message: "sem disponibilidades no momento!"});
         }
 
-        return res.status(200).json({todasDisponibilidade});
+        return res.status(200).json({data: todasDisponibilidade});
     }
     
     async pegarDisponibilidade(req, res) {
