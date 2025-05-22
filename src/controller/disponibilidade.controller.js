@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { 
-    encontrarUsuario,
+    encontrarUsuario
  } from "../services/criar.service.js";
 import disponibilidadeService from "../services/disponibilidade.service.js";
 
@@ -19,6 +19,7 @@ class DisponibilidadeController {
         const existeUsuario = await encontrarUsuario(idProfissional);
 
         if(!existeUsuario) {
+            console.log(existeUsuario);
             return res.status(404).json({erro: "Usuário inválido!"});
         }
 
