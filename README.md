@@ -20,6 +20,18 @@ Esta API está em desenvolvimento. As funcionalidades, rotas e respostas estão 
 
 ---
 
+## 🤝 Colaboradores
+
+- Damaris Fernandez  
+- Maria Eduarda  
+- Gisele Gomes  
+- Helen Gonçalves  
+- Matheus de Sá  
+- Silas Correia  
+- Kauan Schuliner  
+
+---
+
 ## ©️ Direitos Autorais  
 **MãeRaiz API — 2025**  
 Todos os direitos reservados. Este projeto é de uso educacional e social, desenvolvido com amor e propósito pela **Equipe MãeRaiz**.
