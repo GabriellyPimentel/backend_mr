@@ -57,7 +57,7 @@ class ProfissionalApoioController {
             });
         } catch (err) {
             return res.status(500).json({
-                erro: err.message
+                erro: err
             });
         }
     }
