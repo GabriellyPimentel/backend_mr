@@ -57,7 +57,7 @@ class ProfissionalApoioController {
             });
         } catch (err) {
             return res.status(500).json({
-                erro: err.message
+                erro: err
             });
         }
     }
@@ -65,7 +65,7 @@ class ProfissionalApoioController {
     async getAllProfissionais(req, res) {
         const profissionais = await serviceProfissionalApoio.getAllProfissionais();
         return res.status(200).json({
-            profissionais
+            data: profissionais
         });
     }
 

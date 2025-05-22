@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import maeSolo from "./routes/maeSolo.routes.js";
 import profissional from "./routes/profissionalApoio.route.js";
 import disponibilidade from "./routes/disponibilidade.route.js";
+import router from "./routes/filho.routes.js";
 
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/mae-solo", maeSolo);
 app.use("/profissional", profissional);
 app.use("/disponibilidade", disponibilidade);
+app.use("/filho", router);
 
 const PORT = process.env.PORT || 8800;
 

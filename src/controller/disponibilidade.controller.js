@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { 
-    encontrarUsuario,
+    encontrarUsuario
  } from "../services/criar.service.js";
 import disponibilidadeService from "../services/disponibilidade.service.js";
 
@@ -19,6 +19,7 @@ class DisponibilidadeController {
         const existeUsuario = await encontrarUsuario(idProfissional);
 
         if(!existeUsuario) {
+            console.log(existeUsuario);
             return res.status(404).json({erro: "Usuário inválido!"});
         }
 
@@ -64,6 +65,10 @@ class DisponibilidadeController {
 
     async pegarTodasDisponibilidade(req, res) {
         const todasDisponibilidade = await disponibilidadeService.listardisponibilidade();
+
+        if(!todasDisponibilidade) {
+            return res.status(400).json({message: "sem disponibilidades no momento!"});
+        }
 
         return res.status(200).json({todasDisponibilidade});
     }
