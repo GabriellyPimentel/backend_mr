@@ -95,3 +95,5 @@ class ControllerEncaminhamento {
     }
 
 }
+
+export default new ControllerEncaminhamento();
