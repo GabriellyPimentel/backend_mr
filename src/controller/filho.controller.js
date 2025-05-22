@@ -37,7 +37,10 @@ class FilhoController {
 
   async atualizar(req, res) {
     try {
-      const atualizado = await service.atualizarFilho(req.params.id, req.body);
+      const { nome, dia, mes, ano, maeSoloId } = req.body;
+
+      const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
+      const atualizado = await service.atualizarFilho(req.params.id, {nome, dataNascimento, maeSoloId});
       if (!atualizado) return res.status(404).json({ mensagem: "Filho não encontrado." });
       return res.json(atualizado);
     } catch (err) {
