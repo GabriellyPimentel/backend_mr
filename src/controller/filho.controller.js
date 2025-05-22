@@ -3,12 +3,14 @@ import * as service from "../services/filho.service.js";
 class FilhoController {
   async criar(req, res) {
     try {
-      const { nome, dataNascimento, maeSoloId } = req.body;
-      if (!nome || !dataNascimento || !maeSoloId) {
+      const { nome, dia, mes, ano, maeSoloId } = req.body;
+      if (!nome || !dia || !mes || !ano || !maeSoloId) {
         return res.status(400).json({ mensagem: "Dados incompletos." });
       }
+
+      const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
       const filho = await service.criarFilho({ nome, dataNascimento, maeSoloId });
-      return res.status(201).json(filho);
+      return res.status(201).json({filho});
     } catch (err) {
       return res.status(500).json({ erro: err.message });
     }
@@ -17,7 +19,7 @@ class FilhoController {
   async listar(req, res) {
     try {
       const lista = await service.listarFilhos();
-      return res.json(lista);
+      return res.json({data: lista});
     } catch (err) {
       return res.status(500).json({ erro: err.message });
     }

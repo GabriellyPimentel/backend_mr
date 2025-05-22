@@ -3,14 +3,21 @@ const prisma = new PrismaClient();
 
 export async function criarFilho({ nome, dataNascimento, maeSoloId }) {
   return await prisma.filho.create({
-    data: { nome, dataNascimento: new Date(dataNascimento), maeSoloId }
-  });
+    data: {
+      nome,
+      data_nascimento: dataNascimento,
+      idMae: maeSoloId
+    },
+    include: {
+      mae: true
+    }
+});
 }
 
 export async function listarFilhos() {
   return await prisma.filho.findMany({
     include: {
-      maeSolo: {
+      mae: {
         include: { usuario: true }
       }
     }
@@ -19,10 +26,10 @@ export async function listarFilhos() {
 
 export async function buscarFilhoPorId(id) {
   return await prisma.filho.findUnique({
-    where: { id: Number(id) },
+    where: { id },
     include: {
-      maeSolo: {
-        include: { usuario: true }
+      mae: {
+        include: { usuario: true } 
       }
     }
   });
@@ -30,7 +37,7 @@ export async function buscarFilhoPorId(id) {
 
 export async function atualizarFilho(id, dados) {
   return await prisma.filho.update({
-    where: { id: Number(id) },
+    where: { id },
     data: {
       nome: dados.nome,
       dataNascimento: dados.dataNascimento
@@ -47,6 +54,6 @@ export async function atualizarFilho(id, dados) {
 
 export async function deletarFilho(id) {
   return await prisma.filho.delete({
-    where: { id: Number(id) }
+    where: { id }
   });
 }

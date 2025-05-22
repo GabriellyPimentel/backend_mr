@@ -3,10 +3,10 @@ import FilhoController from "../controller/filho.controller.js";
 
 const router = Router();
 
-router.post("/filho/cadastrar", FilhoController.criar);
-router.get("/filho", FilhoController.listar);
-router.get("/filho/buscar/:id", FilhoController.buscarPorId);
-router.put("/filho/atualizar/:id", FilhoController.atualizar);
-router.delete("/filho/deletar/:id", FilhoController.deletar);
+router.post("/cadastrar", FilhoController.criar);
+router.get("/", FilhoController.listar);
+router.get("/buscar/:id", FilhoController.buscarPorId);
+router.put("/atualizar/:id", FilhoController.atualizar);
+router.delete("/deletar/:id", FilhoController.deletar);
 
 export default router;
