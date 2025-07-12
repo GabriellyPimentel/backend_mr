@@ -6,8 +6,11 @@ import profissional from "./routes/profissionalApoio.route.js";
 import disponibilidade from "./routes/disponibilidade.route.js";
 import router from "./routes/filho.routes.js";
 
+<<<<<<< HEAD
 import cors from "cors"; // importando cors -g
 app.use(cors()); // configurado -g
+=======
+>>>>>>> ec47c0d6ad2091ad4cb070b098e456a69a203f43
 
 dotenv.config();
 

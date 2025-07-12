@@ -41,7 +41,11 @@ class ControllerEncaminhamento {
     //Read
     async exibirEncaminhamento(req, res) {
         
+<<<<<<< HEAD
         const todosEncaminhamentos = await encaminhamentoService.getAllEncaminhamento();  /// acrescimo do await 
+=======
+        const todosEncaminhamentos = encaminhamentoService.getAllEncaminhamento();
+>>>>>>> ec47c0d6ad2091ad4cb070b098e456a69a203f43
 
         return res.status(200).json({
             todosEncaminhamentos
