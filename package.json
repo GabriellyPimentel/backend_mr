@@ -11,7 +11,8 @@
     "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "prisma:generate": "prisma generate --schema=prisma/schema.prisma",
     "prisma:studio": "prisma studio --schema=prisma/schema.prisma",
-    "build": "prisma generate --schema=prisma/schema.prisma"
+    "build": "prisma generate --schema=prisma/schema.prisma",
+    "seed": "node prisma/seed.js"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,12 @@
   "homepage": "https://github.com/DamarisFC/API#readme",
   "dependencies": {
     "@prisma/client": "^6.8.2",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",

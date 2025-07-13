@@ -1,28 +1,34 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
-import { logEvents, logger } from "./middlewares/logger.midleware.js"
-import dotenv from "dotenv"
-import maeSolo from "./routes/maeSolo.routes.js";
-import profissional from "./routes/profissionalApoio.route.js";
+import { logEvents, logger } from "./middlewares/logger.midleware.js";
+import authRoutes from "./routes/auth.routes.js";
 import disponibilidade from "./routes/disponibilidade.route.js";
 import router from "./routes/filho.routes.js";
+import maeSolo from "./routes/maeSolo.routes.js";
+import profissional from "./routes/profissionalApoio.route.js";
 
-<<<<<<< HEAD
-import cors from "cors"; // importando cors -g
-app.use(cors()); // configurado -g
-=======
->>>>>>> ec47c0d6ad2091ad4cb070b098e456a69a203f43
+import { verifyToken } from "./middlewares/auth.middleware.js";
+import { checkPermission } from "./middlewares/permission.middleware.js";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(logger);
 app.use(express.json());
+app.use(cookieParser());
 
-app.use("/mae-solo", maeSolo);
-app.use("/profissional", profissional);
-app.use("/disponibilidade", disponibilidade);
-app.use("/filho", router);
+// Rotas públicas
+app.use("/auth", authRoutes);
+
+// Rotas protegidas
+app.use("/mae-solo", verifyToken, checkPermission(["maeSolo"]), maeSolo);
+app.use("/profissional", verifyToken, checkPermission(["profissional"]), profissional);
+app.use("/disponibilidade", verifyToken, checkPermission(["profissional"]), disponibilidade);
+app.use("/filho", verifyToken, checkPermission(["maeSolo"]), router);
 
 const PORT = process.env.PORT || 8800;
 
@@ -39,6 +45,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, async () => {
-    //logEvents(`Servidor rodando na porta ${PORT}`, "listen.log");
-    console.log(`Servidor rodando na porta ${PORT}`)
+  console.log(`Servidor rodando na porta ${PORT}`)
 });
