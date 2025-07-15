@@ -1,5 +1,5 @@
 import { Router } from "express";
-import MaeSoloController from "../controller/api.controllers.js"
+import MaeSoloController from "../controller/api.controller.js";
 
 
 

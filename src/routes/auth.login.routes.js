@@ -3,10 +3,15 @@ import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 
+// ...existing code...
+import { loginUser } from '../controller/auth.login.controller.js';
+// ...existing code...
+
 const router = Router();
 const prisma = new PrismaClient();
 
-router.post('/auth/login', async (req, res) => {
+router.post('/auth/login', loginUser);
+
     const { email, senha } = req.body;
 
     try {
@@ -40,6 +45,6 @@ router.post('/auth/login', async (req, res) => {
         console.error(erro);
         res.status(500).json({ mensagem: 'Erro ao fazer login' });
     }
-});
+;
 
 export default router;

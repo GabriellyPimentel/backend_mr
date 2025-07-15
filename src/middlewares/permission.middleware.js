@@ -1,4 +1,4 @@
-export function requireRole(role) {
+export function checkPermission(role) {
     return (req, res, next) => {
         const { usuario } = req;
 

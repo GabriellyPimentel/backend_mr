@@ -9,8 +9,10 @@ import router from "./routes/filho.routes.js";
 import maeSolo from "./routes/maeSolo.routes.js";
 import profissional from "./routes/profissionalApoio.route.js";
 
-import { verifyToken } from "./middlewares/auth.middleware.js";
+import  verifyToken from "./middlewares/auth.middleware.js";
 import { checkPermission } from "./middlewares/permission.middleware.js";
+
+
 
 dotenv.config();
 

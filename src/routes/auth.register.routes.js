@@ -1,11 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
+import validateFields from "../middlewares/validateFields.middleware.js";
 
 const router = Router();
 const prisma = new PrismaClient();
 
-router.post('/auth/register', async (req, res) => {
+
+router.post('/auth/register', validateFields(["nome", "email", "senha", "documentoIdentificacao", "telefone"]), async (req, res) => {
     const { nome, email, senha, documentoIdentificacao, telefone } = req.body;
 
     try {
