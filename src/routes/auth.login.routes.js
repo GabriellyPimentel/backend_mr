@@ -28,10 +28,14 @@ router.post('/auth/login', async (req, res) => {
             { expiresIn: '2h' }
         );
 
-        // Você pode também usar cookies:
-        // res.cookie('token', token, { httpOnly: true });
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000, 
+        });
 
-        res.status(200).json({ mensagem: 'Login bem-sucedido', token });
+        res.status(200).json({ mensagem: 'Login bem-sucedido' });
     } catch (erro) {
         console.error(erro);
         res.status(500).json({ mensagem: 'Erro ao fazer login' });
