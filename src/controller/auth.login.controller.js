@@ -1,45 +1,43 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
 export async function loginUser(req, res) {
-    try {
-        const { documentoIdentificacao, senha } = req.body;
+    const { email, senha } = req.body;
 
+    try {
         const usuario = await prisma.usuario.findUnique({
-            where: { documentoIdentificacao },
+            where: { email },
         });
 
         if (!usuario) {
-            return res.status(400).json({ mensagem: "Usuário não encontrado" });
+            return res.status(401).json({ mensagem: 'Email ou senha inválidos' });
         }
 
         const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
         if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Senha incorreta" });
+            return res.status(401).json({ mensagem: 'Email ou senha inválidos' });
         }
 
         const token = jwt.sign(
-            {
-                id: usuario.id,
-                tipo: usuario.MaeSolo ? "maeSolo" : usuario.ProfissionalApoio ? "profissional" : "usuario",
-            },
+            { id: usuario.id, email: usuario.email },
             process.env.JWT_SECRET,
-            { expiresIn: "2h" }
+            { expiresIn: '2h' }
         );
 
-        res.cookie("token", token, {
+        res.cookie('authToken', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 2 * 60 * 60 * 1000, // 2 horas
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({ mensagem: "Login realizado com sucesso", token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensagem: "Erro ao realizar login" });
+        res.status(200).json({ mensagem: 'Login bem-sucedido' });
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ mensagem: 'Erro ao fazer login' });
     }
 }
