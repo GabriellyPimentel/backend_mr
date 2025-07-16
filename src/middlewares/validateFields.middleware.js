@@ -1,10 +1,11 @@
-export default function validateFields(fields) {
+export default function validateFields(fields, location = "body") {
     return (req, res, next) => {
         const errors = [];
+        const data = req[location];
 
         fields.forEach((field) => {
-            if (!req.body[field]) {
-                errors.push(`Campo '${field}' é obrigatório.`);
+            if (!data || data[field] === undefined || data[field] === null || data[field] === "") {
+                errors.push(`Campo '${field}' é obrigatório em ${location}.`);
             }
         });
 

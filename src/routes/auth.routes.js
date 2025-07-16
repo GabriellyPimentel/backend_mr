@@ -10,6 +10,6 @@ const router = express.Router();
 router.post("/register", validateFields(["nome", "documentoIdentificacao", "senha"]), registerUser);
 
 // Rota de login
-router.post("/login", validateFields(["documentoIdentificacao", "senha"]), loginUser);
+router.post("/login", validateFields(["email", "senha"]), loginUser);
 
 export default router;
