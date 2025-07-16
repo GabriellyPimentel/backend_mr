@@ -102,10 +102,33 @@ A API foi desenvolvida com foco em boas práticas de código, testes automatizad
 
 [![Tech Stack](https://skillicons.dev/icons?i=js,nodejs,express,prisma,postgres,npm)](https://skillicons.dev)    <img src="https://techstack-generator.vercel.app/restapi-icon.svg" width="48" height="50" alt="jQuery" />
 
-- **Node.js** e **Express** para construção do servidor
-- **Prisma ORM** para manipulação de banco de dados
-- **PostgreSQL** como banco relacional
-- **Autenticação via tokens**
+
+| Tecnologia       | Versão    | Descrição                                  |
+|------------------|-----------|--------------------------------------------|
+| Node.js          | —         | Ambiente de execução JavaScript no servidor |
+| Express          | 5.1.0     | Framework para criação da API REST          |
+| Prisma Client    | 6.8.2     | ORM para acesso e manipulação do banco de dados |
+| Prisma CLI       | 6.8.2     | Ferramentas para migração e gerenciamento do banco |
+| bcrypt           | 6.0.0     | Biblioteca para hash de senhas              |
+| jsonwebtoken     | 9.0.2     | Implementação de JWT para autenticação      |
+| dotenv           | 16.5.0    | Gerenciamento de variáveis de ambiente      |
+| cors             | 2.8.5     | Middleware para habilitar CORS               |
+| cookie-parser    | 1.4.7     | Middleware para ler cookies                  |
+| date-fns         | 4.1.0     | Manipulação de datas                          |
+| uuid             | 11.1.0    | Geração de identificadores únicos (UUID)    |
+| nodemon (dev)    | 3.1.10    | Reinício automático do servidor em desenvolvimento |
+
+---
+
+## 🚀 Como Executar o Projeto
+
+1. Clone o repositório:  
+```bash
+git clone https://github.com/DamarisFC/API.git
+cd API
+
+
+
 
 ---
 
