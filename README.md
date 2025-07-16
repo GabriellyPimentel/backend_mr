@@ -118,17 +118,6 @@ A API foi desenvolvida com foco em boas práticas de código, testes automatizad
 | uuid             | 11.1.0    | Geração de identificadores únicos (UUID)    |
 | nodemon (dev)    | 3.1.10    | Reinício automático do servidor em desenvolvimento |
 
----
-
-## 🚀 Como Executar o Projeto
-
-1. Clone o repositório:  
-```bash
-git clone https://github.com/DamarisFC/API.git
-cd API
-
-
-
 
 ---
 
